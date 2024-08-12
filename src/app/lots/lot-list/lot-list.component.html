@@ -1,0 +1,11 @@
+<div class="container">
+    <h2>Available Lots</h2>
+    <div *ngFor="let lot of lots" class="lot-item">
+      <h3>{{ lot.title }}</h3>
+      <p>{{ lot.description }}</p>
+      <p>Starting Price: {{ lot.startingPrice | currency }}</p>
+      <p>Current Price: {{ lot.currentPrice | currency }}</p>
+      <a [routerLink]="['/lots', lot.id]">View Details</a>
+    </div>
+  </div>
+  

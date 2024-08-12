@@ -1,0 +1,10 @@
+<nav>
+    <ul>
+      <li><a [routerLink]="['/']">Home</a></li>
+      <li *ngIf="authService.isAuthenticated() && authService.isAdmin()"><a [routerLink]="['/admin']">Admin Panel</a></li>
+      <li *ngIf="authService.isAuthenticated()"><button (click)="logout()">Logout</button></li>
+      <li *ngIf="!authService.isAuthenticated()"><a [routerLink]="['/login']">Login</a></li>
+    </ul>
+  </nav>
+  <router-outlet></router-outlet>
+  

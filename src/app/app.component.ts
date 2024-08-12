@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 import { AuthService } from './auth/auth.service';
 
 @Component({
@@ -15,3 +15,4 @@ export class AppComponent {
     this.authService.logout();
   }
 }
+
