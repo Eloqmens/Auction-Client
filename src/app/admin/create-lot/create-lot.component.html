@@ -15,7 +15,9 @@
   
       <label for="categoryId">Category:</label>
       <select id="categoryId" [(ngModel)]="lot.categoryId" name="categoryId" required>
-        <!-- Categories should be loaded here -->
+        <option *ngFor="let category of categories" [value]="category.id">
+          {{ category.name }}
+        </option>
       </select>
   
       <button type="submit">Create Lot</button>
