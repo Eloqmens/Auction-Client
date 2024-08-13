@@ -7,8 +7,8 @@
 
   <div *ngIf="authService.isAuthenticated()">
     <h3>Place a Bid</h3>
-    <input type="number" [(ngModel)]="bidAmount" />
-    <button (click)="placeBid()">Place Bid</button>
+    <input type="number" class="form-control mb-2" [(ngModel)]="bidAmount" />
+    <button class="btn btn-success" (click)="placeBid()">Place Bid</button>
     <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
   </div>
 </div>
