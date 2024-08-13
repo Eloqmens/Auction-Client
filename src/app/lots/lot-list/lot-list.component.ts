@@ -34,4 +34,13 @@ export class LotListComponent implements OnInit {
       }
     });
   }
+
+  deleteLot(id: number): void {
+    if (confirm('Are you sure you want to delete this lot?')) {
+      this.lotService.deleteLot(id).subscribe(() => {
+        this.lots = this.lots.filter(lot => lot.id !== id);
+        alert('Lot deleted successfully!');
+      });
+    }
+  }
 }

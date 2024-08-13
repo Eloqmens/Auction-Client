@@ -15,5 +15,7 @@
     <p>Starting Price: {{ lot.startingPrice | currency }}</p>
     <p>Current Price: {{ lot.currentPrice | currency }}</p>
     <a [routerLink]="['/lots', lot.id]">View Details</a>
+    <a [routerLink]="['/admin/edit-lot', lot.id]">Edit Lot</a>
+    <button (click)="deleteLot(lot.id)">Delete Lot</button>
   </div>
 </div>

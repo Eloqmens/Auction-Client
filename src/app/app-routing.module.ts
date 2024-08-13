@@ -13,7 +13,7 @@ import { AdminGuard } from './auth/admin.guard';
 const routes: Routes = [
   { path: '', component: LotListComponent },
   { path: 'lots/:id', component: LotDetailsComponent },
-  { path: 'login', component: LoginComponent }, // Маршрут для страницы логина
+  { path: 'login', component: LoginComponent },
   { path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard] },
   { path: 'admin/create-lot', component: CreateLotComponent, canActivate: [AdminGuard] },
   { path: 'admin/edit-lot/:id', component: EditLotComponent, canActivate: [AdminGuard] },

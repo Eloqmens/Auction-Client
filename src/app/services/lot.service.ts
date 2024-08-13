@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Lot } from '../models/lot.model';
 import { Category } from '../models/category.model';
@@ -25,11 +25,18 @@ export class LotService {
   }
 
   updateLot(lot: Lot): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/lots`, lot);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    });
+    return this.http.put<void>(`${this.apiUrl}/lots`, lot, { headers });
   }
 
   deleteLot(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/lots/${id}`);
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    });
+    return this.http.delete<void>(`${this.apiUrl}/lots/${id}`, { headers });
   }
 
   getCategories(): Observable<Category[]> {
