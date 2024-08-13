@@ -1,1 +1,14 @@
-<p>category-management works!</p>
+<div class="container">
+    <h2>Manage Categories</h2>
+    
+    <input [(ngModel)]="newCategoryName" placeholder="New category name" />
+    <button (click)="addCategory()">Add Category</button>
+  
+    <ul>
+      <li *ngFor="let category of categories">
+        {{ category.name }}
+        <button (click)="deleteCategory(category.id)">Delete</button>
+      </li>
+    </ul>
+  </div>
+  

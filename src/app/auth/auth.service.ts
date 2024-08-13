@@ -33,9 +33,11 @@ export class AuthService {
     const token = localStorage.getItem('authToken');
     if (token) {
       const decodedToken: any = jwtDecode(token);
+      console.log(decodedToken); // Выводим содержимое токена для отладки
       const roles = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
       return roles && roles.includes('Admin');
     }
     return false;
   }
+  
 }

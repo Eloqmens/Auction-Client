@@ -1,1 +1,24 @@
-<p>create-lot works!</p>
+<div class="container">
+    <h2>Create New Lot</h2>
+    <form (ngSubmit)="createLot()">
+      <label for="title">Title:</label>
+      <input id="title" [(ngModel)]="lot.title" name="title" required />
+  
+      <label for="description">Description:</label>
+      <textarea id="description" [(ngModel)]="lot.description" name="description" required></textarea>
+  
+      <label for="startingPrice">Starting Price:</label>
+      <input id="startingPrice" type="number" [(ngModel)]="lot.startingPrice" name="startingPrice" required />
+  
+      <label for="endTime">End Time:</label>
+      <input id="endTime" type="datetime-local" [(ngModel)]="lot.endTime" name="endTime" required />
+  
+      <label for="categoryId">Category:</label>
+      <select id="categoryId" [(ngModel)]="lot.categoryId" name="categoryId" required>
+        <!-- Categories should be loaded here -->
+      </select>
+  
+      <button type="submit">Create Lot</button>
+    </form>
+  </div>
+  

@@ -5,11 +5,12 @@ import { RouterModule } from '@angular/router';          // Импорт RouterM
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { LotListComponent } from './lots/lot-list/lot-list.component';
 import { LotDetailsComponent } from './lots/lot-details/lot-details.component';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { AuthInterceptor } from './auth/auth-interceptor.service';
 import { CreateLotComponent } from './admin/create-lot/create-lot.component';
 import { EditLotComponent } from './admin/edit-lot/edit-lot.component';
 import { CategoryManagementComponent } from './admin/category-management/category-management.component';
@@ -33,7 +34,9 @@ import { CategoryManagementComponent } from './admin/category-management/categor
     HttpClientModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,1 +1,15 @@
-<p>lot-details works!</p>
+<div *ngIf="lot" class="container">
+    <h2>{{ lot.title }}</h2>
+    <p>{{ lot.description }}</p>
+    <p>Starting Price: {{ lot.startingPrice | currency }}</p>
+    <p>Current Price: {{ lot.currentPrice | currency }}</p>
+    <p>End Time: {{ lot.endTime | date:'short' }}</p>
+  
+    <div *ngIf="authService.isAuthenticated()">
+      <h3>Place a Bid</h3>
+      <input type="number" [(ngModel)]="bidAmount" />
+      <button (click)="placeBid()">Place Bid</button>
+      <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+    </div>
+  </div>
+  

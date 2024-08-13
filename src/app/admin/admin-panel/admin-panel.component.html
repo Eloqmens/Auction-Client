@@ -1,10 +1,7 @@
-<nav>
-    <ul>
-      <li><a [routerLink]="['/']">Home</a></li>
-      <li *ngIf="authService.isAuthenticated() && authService.isAdmin()"><a [routerLink]="['/admin']">Admin Panel</a></li>
-      <li *ngIf="authService.isAuthenticated()"><button (click)="logout()">Logout</button></li>
-      <li *ngIf="!authService.isAuthenticated()"><a [routerLink]="['/login']">Login</a></li>
-    </ul>
-  </nav>
-  <router-outlet></router-outlet>
-  
+<div class="container">
+  <h2>Admin Panel</h2>
+  <ul>
+    <li><a [routerLink]="['/admin/create-lot']">Create New Lot</a></li>
+    <li><a [routerLink]="['/admin/categories']">Manage Categories</a></li>
+  </ul>
+</div>
