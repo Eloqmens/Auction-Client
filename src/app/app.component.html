@@ -2,6 +2,9 @@
   <a class="navbar-brand" [routerLink]="['/']">Auction App</a>
   <div class="collapse navbar-collapse justify-content-end">
     <ul class="navbar-nav">
+      <li *ngIf="authService.isAdmin()" class="nav-item">
+        <a class="nav-link" [routerLink]="['/admin']">Admin Panel</a>
+      </li>
       <li *ngIf="!authService.isAuthenticated()" class="nav-item">
         <a class="nav-link" [routerLink]="['/login']">Login</a>
       </li>
@@ -12,4 +15,3 @@
   </div>
 </nav>
 <router-outlet></router-outlet>
-
