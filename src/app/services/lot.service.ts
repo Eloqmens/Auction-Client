@@ -8,7 +8,7 @@ import { Category } from '../models/category.model';
   providedIn: 'root'
 })
 export class LotService {
-  private apiUrl = 'https://localhost:7130/api'; // Замените на URL вашего API
+  private apiUrl = 'https://localhost:7130/api';
 
   constructor(private http: HttpClient) {}
 

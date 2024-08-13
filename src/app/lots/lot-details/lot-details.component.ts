@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LotService } from '../../services/lot.service';
+import { BidService } from '../../services/bid.service';
 import { Lot } from '../../models/lot.model';
 import { AuthService } from '../../auth/auth.service';
 
@@ -17,7 +18,8 @@ export class LotDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private lotService: LotService,
-    public authService: AuthService
+    public authService: AuthService,
+    public bidService: BidService,
   ) {}
 
   ngOnInit(): void {
@@ -35,10 +37,15 @@ export class LotDetailsComponent implements OnInit {
       return;
     }
 
-    // TODO: Implement bid placing logic here using a service
-    this.errorMessage = '';
-    // Temporary mock logic:
-    this.lot.currentPrice = this.bidAmount;
-    alert('Bid placed successfully!');
+    this.bidService.placeBid(this.lot.id, this.bidAmount).subscribe({
+      next: () => {
+        this.errorMessage = '';
+        this.lot!.currentPrice = this.bidAmount;
+        alert('Bid placed successfully!');
+      },
+      error: (err) => {
+        this.errorMessage = 'Error placing bid: ' + err.error;
+      }
+    });
   }
 }
