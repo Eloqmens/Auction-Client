@@ -1,27 +1,66 @@
 # AuctionClient
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.4.
+Auction-Client is the client side of an online auction web application implemented in Angular. This project communicates with the server side **AuctionApi:** (https://github.com/Eloqmens/AuctionApi) via REST API and provides an interface for users and administrators.
 
-## Development server
+## Technologies
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Angular 18.1.4**
+- **Bootstrap 5**
+- **RxJS**
+- **TypeScript**
 
-## Code scaffolding
+## Project structure
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- `src/app` - main folder with components, services, routes and models.
+- `auth` - components and services for authentication and authorization.
+- `lots` - components for working with lots (creating, viewing, editing, deleting).
+- `admin` - components and routes for lot and category administration.
+- `services` - services for interaction with API.
 
-## Build
+## Main functions
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **Lots View:** users can view available lots.
+- **Bidding:** authorized users can bid on lots.
+- **Authentication and Authorization:** support for logging in and registering new users.
+- **Administration:** administrators can manage lots and categories through admin panel.
+- **Lot Filtering:** users can filter lots by category.
 
-## Running unit tests
+## Installation and startup
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/Eloqmens/Auction-Client
+    cd Auction-Client
+    ```
 
-## Running end-to-end tests
+2. Install dependencies:
+    ````bash
+    npm install
+    ```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+3. configure the URL API in ``environment.ts``:
+    ````typescript
+    export const environment = {
+      production: false,
+      apiUrl: 'https://localhost:7130/api'
+    };
+    ```
 
-## Further help
+4. Run the project:
+    ```bash
+    ng serve
+    ```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+5. The application will be available at ``http://localhost:4200``.
+
+## Administrator functionality
+
+After logging in as an administrator, you will have an "Admin Panel" button where you will be able to:
+- Create, edit and delete lots.
+- Manage categories (add and delete them).
+
+## Authorization
+
+- A user with the `Admin` role has access to the Admin Panel.
+- Normal users can view lots and place bids.
+
