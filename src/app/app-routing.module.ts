@@ -9,11 +9,13 @@ import { EditLotComponent } from './admin/edit-lot/edit-lot.component';
 import { CategoryManagementComponent } from './admin/category-management/category-management.component';
 import { AuthGuard } from './auth/auth.guard';
 import { AdminGuard } from './auth/admin.guard';
+import { RegisterComponent } from './auth/register/register.component';
 
 const routes: Routes = [
   { path: '', component: LotListComponent },
   { path: 'lots/:id', component: LotDetailsComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent},
   { path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard] },
   { path: 'admin/create-lot', component: CreateLotComponent, canActivate: [AdminGuard] },
   { path: 'admin/edit-lot/:id', component: EditLotComponent, canActivate: [AdminGuard] },

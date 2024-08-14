@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AppRoutingModule } from './app-routing.module';  // Импорт модуля маршрутизации
-import { RouterModule } from '@angular/router';          // Импорт RouterModule
+import { AppRoutingModule } from './app-routing.module';  
+import { RouterModule } from '@angular/router';          
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
@@ -29,8 +29,8 @@ import { CategoryManagementComponent } from './admin/category-management/categor
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,  // Добавление модуля маршрутизации
-    RouterModule,      // Добавление RouterModule
+    AppRoutingModule,  
+    RouterModule,      
     HttpClientModule,
     FormsModule
   ],
