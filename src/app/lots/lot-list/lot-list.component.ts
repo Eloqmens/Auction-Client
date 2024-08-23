@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LotService } from '../../services/lot.service';
 import { Lot } from '../../models/lot.model';
 import { Category } from '../../models/category.model';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-lot-list',
@@ -13,7 +14,10 @@ export class LotListComponent implements OnInit {
   categories: Category[] = [];
   selectedCategoryId: number | null = null;
 
-  constructor(private lotService: LotService) {}
+  constructor(private lotService: LotService,
+    public authService: AuthService
+  ) {}
+  
 
   ngOnInit(): void {
     this.lotService.getLots().subscribe((data) => {
@@ -43,4 +47,6 @@ export class LotListComponent implements OnInit {
       });
     }
   }
+
+  
 }

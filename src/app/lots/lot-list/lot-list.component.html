@@ -3,21 +3,22 @@
 
   <div class="category-filter">
     <label for="categorySelect">Filter by Category:</label>
-    <select class="form-control" id="categorySelect" [(ngModel)]="selectedCategoryId" (change)="filterByCategory()">
+    <select id="categorySelect" [(ngModel)]="selectedCategoryId" (change)="filterByCategory()" class="form-control">
       <option [ngValue]="null">All Categories</option>
       <option *ngFor="let category of categories" [ngValue]="category.id">{{ category.name }}</option>
     </select>
   </div>
 
-  <div *ngFor="let lot of lots" class="lot-item card mb-3">
-    <div class="card-body">
-      <h3 class="card-title">{{ lot.title }}</h3>
-      <p class="card-text">{{ lot.description }}</p>
-      <p>Starting Price: {{ lot.startingPrice | currency }}</p>
-      <p>Current Price: {{ lot.currentPrice | currency }}</p>
-      <a class="btn btn-primary" [routerLink]="['/lots', lot.id]">View Details</a>
-      <a class="btn btn-secondary" [routerLink]="['/admin/edit-lot', lot.id]">Edit Lot</a>
-      <button class="btn btn-danger" (click)="deleteLot(lot.id)">Delete Lot</button>
+  <div *ngFor="let lot of lots" class="lot-item mt-4">
+    <h3>{{ lot.title }}</h3>
+    <p>{{ lot.description }}</p>
+    <p>Starting Price: {{ lot.startingPrice | currency }}</p>
+    <p>Current Price: {{ lot.currentPrice | currency }}</p>
+    <a [routerLink]="['/lots', lot.id]" class="btn btn-info">View Details</a>
+
+    <div *ngIf="authService.isAdmin()" class="mt-2">
+      <a [routerLink]="['/admin/edit-lot', lot.id]" class="btn btn-warning mx-2">Edit Lot</a>
+      <button (click)="deleteLot(lot.id)" class="btn btn-danger">Delete Lot</button>
     </div>
   </div>
 </div>
