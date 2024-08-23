@@ -1,7 +1,7 @@
 <div class="container">
   <h2>Available Lots</h2>
 
-  <div class="category-filter">
+  <div class="category-filter mb-3">
     <label for="categorySelect">Filter by Category:</label>
     <select id="categorySelect" [(ngModel)]="selectedCategoryId" (change)="filterByCategory()" class="form-control">
       <option [ngValue]="null">All Categories</option>
@@ -9,16 +9,19 @@
     </select>
   </div>
 
-  <div *ngFor="let lot of lots" class="lot-item mt-4">
+  <div *ngFor="let lot of lots" class="lot-item mb-4 p-3 bg-light rounded shadow-sm">
     <h3>{{ lot.title }}</h3>
     <p>{{ lot.description }}</p>
     <p>Starting Price: {{ lot.startingPrice | currency }}</p>
     <p>Current Price: {{ lot.currentPrice | currency }}</p>
-    <a [routerLink]="['/lots', lot.id]" class="btn btn-info">View Details</a>
 
-    <div *ngIf="authService.isAdmin()" class="mt-2">
-      <a [routerLink]="['/admin/edit-lot', lot.id]" class="btn btn-warning mx-2">Edit Lot</a>
-      <button (click)="deleteLot(lot.id)" class="btn btn-danger">Delete Lot</button>
+    <div class="d-flex justify-content-start mt-3">
+      <a [routerLink]="['/lots', lot.id]" class="btn btn-info text-white me-2">View Details</a>
+
+      <span *ngIf="authService.isAdmin()">
+        <a [routerLink]="['/admin/edit-lot', lot.id]" class="btn btn-warning text-white me-2">Edit Lot</a>
+        <button (click)="deleteLot(lot.id)" class="btn btn-danger">Delete Lot</button>
+      </span>
     </div>
   </div>
 </div>
