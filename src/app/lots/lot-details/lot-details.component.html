@@ -1,0 +1,333 @@
+<div class="container-fluid px-4 py-4" *ngIf="lot; else loadingTemplate">
+  <!-- Breadcrumbs -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/lots" class="text-decoration-none">
+          <i class="fas fa-gavel me-1"></i>Лоты
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">{{ lot.title }}</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <!-- Lot main info -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0 mb-4 lot-main-card">
+        <div class="card-header bg-white border-0 pb-0">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+              <h1 class="card-title text-primary mb-2 fw-bold display-6">{{ lot.title }}</h1>
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <span *ngIf="lot.category" class="badge bg-secondary fs-6">
+                  <i class="fas fa-tag me-1"></i>{{ lot.category.name }}
+                </span>
+                <span class="badge bg-light text-dark fs-6">
+                  <i class="fas fa-calendar-alt me-1"></i>
+                  {{ lot.createdAt | date:'dd MMMM yyyy' }}
+                </span>
+                <span class="badge" [class]="getStatusBadgeClass()">
+                  <i class="fas" [class]="getStatusIcon()"></i>
+                  {{ getAuctionStatus() }}
+                </span>
+              </div>
+            </div>
+            
+            <!-- Admin actions -->
+            <div class="dropdown" *ngIf="authService.isAdmin()">
+              <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="dropdown">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" [routerLink]="['/lots', lot.id, 'edit']">
+                  <i class="fas fa-edit me-2"></i>Редактировать
+                </a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="#" (click)="deleteLot()">
+                  <i class="fas fa-trash me-2"></i>Удалить
+                </a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <!-- Image gallery -->
+          <div class="mb-4" *ngIf="lot.images && lot.images.length > 0">
+            <h5 class="text-secondary mb-3">
+              <i class="fas fa-images me-2"></i>Изображения лота
+            </h5>
+            <div class="row g-3">
+              <div *ngFor="let image of lot.images; let i = index" class="col-md-4 col-lg-3">
+                <div class="image-gallery-item position-relative" [class.main-image]="image.isMain">
+                  <img [src]="image.fileUrl"
+                       loading="lazy"
+                       [attr.decoding]="'async'"
+                       [alt]="lot.title + ' - изображение ' + (i + 1)"
+                       class="img-fluid rounded shadow-sm"
+                       (click)="openImageModal(image)"
+                       (error)="onImageError($event)"
+                       style="cursor: pointer;">
+                  <button *ngIf="authService.isAdmin() && !image.isMain"
+                          class="btn btn-sm btn-outline-primary position-absolute"
+                          style="top: 8px; right: 8px;"
+                          (click)="setMainImage(image.id)">
+                    <i class="fas fa-star me-1"></i>Сделать главным
+                  </button>
+                  <div *ngIf="image.isMain" class="main-image-badge">
+                    <i class="fas fa-star"></i> Главное
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-4">
+            <h5 class="text-secondary mb-3">
+              <i class="fas fa-info-circle me-2"></i>Описание лота
+            </h5>
+            <p class="lead text-muted">{{ lot.description }}</p>
+          </div>
+
+          <!-- Price info -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <div class="price-card starting-price">
+                <div class="price-header">
+                  <i class="fas fa-play-circle me-2"></i>
+                  <span>Стартовая цена</span>
+                </div>
+                <div class="price-value">{{ lot.startingPrice | currency:'RUB':'symbol':'1.0-0' }}</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="price-card current-price">
+                <div class="price-header">
+                  <i class="fas fa-chart-line me-2"></i>
+                  <span>Текущая цена</span>
+                </div>
+                <div class="price-value text-success">{{ lot.currentPrice | currency:'RUB':'symbol':'1.0-0' }}</div>
+                <div class="price-growth" *ngIf="getPriceGrowth() > 0">
+                  <i class="fas fa-arrow-up"></i>
+                  +{{ getPriceGrowth() }}%
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Price growth progress bar -->
+          <div class="progress mb-4" style="height: 8px;">
+            <div 
+              class="progress-bar bg-gradient" 
+              [style.width.%]="getPriceProgress()"
+              [class.bg-success]="getPriceProgress() < 50"
+              [class.bg-warning]="getPriceProgress() >= 50 && getPriceProgress() < 80"
+              [class.bg-danger]="getPriceProgress() >= 80">
+            </div>
+          </div>
+
+          <!-- Auction time section -->
+          <div class="time-section">
+            <div class="time-header mb-3">
+              <h5 class="text-secondary mb-0">
+                <i class="fas fa-clock me-2"></i>Время аукциона
+              </h5>
+            </div>
+            <div class="time-info-detailed">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="time-item">
+                    <span class="time-label">Окончание:</span>
+                    <span class="time-value">{{ lot.endTime | date:'dd MMMM yyyy, HH:mm' }}</span>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="time-item">
+                    <span class="time-label">Осталось:</span>
+                    <span class="time-value" [class]="getTimeRemainingClass()">
+                      {{ getRemainingTime() }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Ends soon warning -->
+            <div *ngIf="isEndingSoon()" class="alert alert-warning mt-3">
+              <i class="fas fa-exclamation-triangle me-2"></i>
+              <strong>Внимание!</strong> Аукцион скоро закончится! Поторопитесь с вашей ставкой.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bid panel -->
+    <div class="col-lg-4">
+      <div class="bid-panel">
+        <!-- Bid form -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+              <i class="fas fa-hammer me-2"></i>Сделать ставку
+            </h5>
+          </div>
+          <div class="card-body">
+            <div *ngIf="authService.isAuthenticated() && !isAuctionEnded(); else bidNotAllowed">
+              <!-- Minimal bid -->
+              <div class="mb-3">
+                <small class="text-muted">Минимальная ставка:</small>
+                <div class="h5 text-primary fw-bold">
+                  {{ getMinimumBid() | currency:'RUB':'symbol':'1.0-0' }}
+                </div>
+              </div>
+
+              <!-- Bid input -->
+              <div class="mb-3">
+                <label for="bidAmount" class="form-label">Ваша ставка:</label>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text">₽</span>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    id="bidAmount"
+                    [(ngModel)]="bidAmount" 
+                    [min]="getMinimumBid()"
+                    placeholder="Введите сумму"
+                    [class.is-invalid]="bidAmount > 0 && bidAmount < getMinimumBid()">
+                </div>
+                <div class="form-text">
+                  Быстрый выбор: 
+                  <button 
+                    *ngFor="let amount of getQuickBidAmounts()" 
+                    class="btn btn-outline-secondary btn-sm me-1 mt-1" 
+                    (click)="setBidAmount(amount)">
+                    +{{ amount | currency:'RUB':'symbol':'1.0-0' }}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Place bid button -->
+              <div class="d-grid">
+                <button 
+                  class="btn btn-success btn-lg" 
+                  (click)="placeBid()"
+                  [disabled]="!bidAmount || bidAmount < getMinimumBid() || isPlacingBid"
+                  [class.btn-outline-success]="!bidAmount || bidAmount < getMinimumBid()">
+                  <span *ngIf="isPlacingBid" class="spinner-border spinner-border-sm me-2"></span>
+                  <i class="fas fa-gavel me-2" *ngIf="!isPlacingBid"></i>
+                  {{ isPlacingBid ? 'Размещение...' : 'Сделать ставку' }}
+                </button>
+              </div>
+
+              <!-- Errors -->
+              <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                {{ errorMessage }}
+              </div>
+
+              <!-- Success -->
+              <div *ngIf="successMessage" class="alert alert-success mt-3">
+                <i class="fas fa-check-circle me-2"></i>
+                {{ successMessage }}
+              </div>
+            </div>
+
+            <!-- Not authorized or auction ended -->
+            <ng-template #bidNotAllowed>
+              <div *ngIf="!authService.isAuthenticated()" class="text-center">
+                <i class="fas fa-user-lock text-muted mb-3" style="font-size: 3rem;"></i>
+                <h6 class="text-muted mb-3">Войдите, чтобы делать ставки</h6>
+                <a routerLink="/login" class="btn btn-primary">
+                  <i class="fas fa-sign-in-alt me-2"></i>Войти
+                </a>
+              </div>
+              <div *ngIf="authService.isAuthenticated() && isAuctionEnded()" class="text-center">
+                <i class="fas fa-flag-checkered text-muted mb-3" style="font-size: 3rem;"></i>
+                <h6 class="text-muted">Аукцион завершен</h6>
+                <p class="text-muted small">Прием ставок закончен</p>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+
+        <!-- Additional info -->
+        <div class="card shadow-sm border-0">
+          <div class="card-header bg-light">
+            <h6 class="mb-0">
+              <i class="fas fa-info-circle me-2"></i>Информация об аукционе
+            </h6>
+          </div>
+          <div class="card-body">
+            <div class="auction-info">
+              <div class="info-item">
+                <span class="info-label">Продавец:</span>
+                <span class="info-value">Администратор</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Обновлено:</span>
+                <span class="info-value">{{ lot.updatedAt | date:'dd.MM.yyyy HH:mm' }}</span>
+              </div>
+              <div class="info-item" *ngIf="lot.category">
+                <span class="info-label">Категория:</span>
+                <span class="info-value">{{ lot.category.name }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading template -->
+<ng-template #loadingTemplate>
+  <div class="container-fluid px-4 py-5">
+    <div class="text-center">
+      <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;"></div>
+      <h5 class="text-muted">Загружаем информацию о лоте...</h5>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Image modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel">Изображение лота</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="imageCarousel" class="carousel slide" data-bs-ride="false">
+          <div class="carousel-inner">
+            <div *ngFor="let image of lot?.images; let i = index" class="carousel-item" [class.active]="selectedImage?.id === image.id || (!selectedImage && i === 0)">
+              <div class="position-relative">
+                <img [src]="image.fileUrl" class="d-block w-100 rounded" [alt]="lot?.title" loading="lazy" [attr.decoding]="'async'" (error)="onImageError($event)">
+                <button *ngIf="authService.isAdmin() && !image.isMain" class="btn btn-sm btn-primary position-absolute" style="top: 12px; right: 12px;" (click)="setMainImage(image.id)">
+                  <i class="fas fa-star me-1"></i>Сделать главным
+                </button>
+                <div *ngIf="image.isMain" class="badge bg-warning text-dark position-absolute" style="top: 12px; left: 12px;">
+                  <i class="fas fa-star me-1"></i>Главное
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>

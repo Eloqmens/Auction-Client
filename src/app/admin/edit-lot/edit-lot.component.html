@@ -1,0 +1,269 @@
+<div class="container-fluid px-4 py-4">
+  <!-- Хлебные крошки -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/lots" class="text-decoration-none">
+          <i class="fas fa-gavel me-1"></i>Лоты
+        </a>
+      </li>
+      <li class="breadcrumb-item" *ngIf="lot">
+        <a [routerLink]="['/lots', lot.id]" class="text-decoration-none">{{ lot.title }}</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Редактирование</li>
+    </ol>
+  </nav>
+
+  <!-- Заголовок -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="mb-1">
+        <i class="fas fa-edit text-warning me-2"></i>
+        Редактирование лота
+      </h1>
+      <p class="text-muted mb-0" *ngIf="lot">Изменение информации о лоте "{{ lot.title }}"</p>
+    </div>
+    <div>
+      <a [routerLink]="['/lots', lot?.id]" class="btn btn-outline-secondary me-2">
+        <i class="fas fa-eye me-2"></i>Просмотр
+      </a>
+      <a routerLink="/lots" class="btn btn-secondary">
+        <i class="fas fa-arrow-left me-2"></i>К списку лотов
+      </a>
+    </div>
+  </div>
+
+  <!-- Индикатор загрузки -->
+  <div *ngIf="!lot && !isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;"></div>
+    <h5 class="text-muted">Загружаем информацию о лоте...</h5>
+  </div>
+
+  <!-- Форма редактирования -->
+  <div *ngIf="lot" class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-warning text-dark">
+          <h5 class="mb-0">
+            <i class="fas fa-edit me-2"></i>Редактирование лота
+          </h5>
+        </div>
+        <div class="card-body">
+          <form #editForm="ngForm" (ngSubmit)="updateLot()">
+            <div class="row g-4">
+              <!-- Основная информация -->
+              <div class="col-md-12">
+                <div class="card h-100">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">
+                      <i class="fas fa-info-circle me-2"></i>Основная информация
+                    </h6>
+                  </div>
+                  <div class="card-body">
+                    <!-- Название -->
+                    <div class="mb-3">
+                      <label for="lotTitle" class="form-label">
+                        <i class="fas fa-heading me-2"></i>Название лота *
+                      </label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        id="lotTitle"
+                        [(ngModel)]="lot.title"
+                        name="title"
+                        required
+                        placeholder="Введите название лота..."
+                        maxlength="200">
+                      <div class="form-text">Максимум 200 символов</div>
+                    </div>
+
+                    <!-- Описание -->
+                    <div class="mb-3">
+                      <label for="lotDescription" class="form-label">
+                        <i class="fas fa-align-left me-2"></i>Описание *
+                      </label>
+                      <textarea 
+                        class="form-control" 
+                        id="lotDescription"
+                        [(ngModel)]="lot.description"
+                        name="description"
+                        required
+                        rows="4"
+                        placeholder="Подробное описание лота..."
+                        maxlength="1000"></textarea>
+                      <div class="form-text">Максимум 1000 символов</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ценовая информация и настройки -->
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">
+                      <i class="fas fa-money-bill-wave me-2"></i>Ценовая информация
+                    </h6>
+                  </div>
+                  <div class="card-body">
+                    <!-- Стартовая цена -->
+                    <div class="mb-3">
+                      <label for="lotStartingPrice" class="form-label">
+                        <i class="fas fa-ruble-sign me-2"></i>Стартовая цена *
+                      </label>
+                      <div class="input-group">
+                        <input 
+                          type="number" 
+                          class="form-control" 
+                          id="lotStartingPrice"
+                          [(ngModel)]="lot.startingPrice"
+                          name="startingPrice"
+                          required
+                          min="1"
+                          step="100"
+                          placeholder="0">
+                        <span class="input-group-text">₽</span>
+                      </div>
+                    </div>
+
+                    <!-- Текущая цена (только для информации) -->
+                    <div class="mb-3">
+                      <label class="form-label">
+                        <i class="fas fa-chart-line me-2"></i>Текущая цена
+                      </label>
+                      <div class="input-group">
+                        <input 
+                          type="text" 
+                          class="form-control" 
+                          [value]="lot.currentPrice | currency:'RUB':'symbol':'1.0-0'"
+                          readonly>
+                        <span class="input-group-text bg-success text-white">
+                          <i class="fas fa-lock"></i>
+                        </span>
+                      </div>
+                      <div class="form-text text-info">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Текущая цена изменяется только при размещении ставок
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Категория и время -->
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">
+                      <i class="fas fa-cog me-2"></i>Настройки аукциона
+                    </h6>
+                  </div>
+                  <div class="card-body">
+                    <!-- Категория -->
+                    <div class="mb-3">
+                      <label for="lotCategory" class="form-label">
+                        <i class="fas fa-tag me-2"></i>Категория *
+                      </label>
+                      <select 
+                        class="form-select" 
+                        id="lotCategory"
+                        [(ngModel)]="lot.categoryId"
+                        name="categoryId"
+                        required>
+                        <option value="">Выберите категорию</option>
+                        <option *ngFor="let category of categories" [value]="category.id">
+                          {{ category.name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <!-- Время окончания -->
+                    <div class="mb-3">
+                      <label for="lotEndTime" class="form-label">
+                        <i class="fas fa-clock me-2"></i>Время окончания *
+                      </label>
+                      <input 
+                        type="datetime-local" 
+                        class="form-control" 
+                        id="lotEndTime"
+                        [(ngModel)]="endTimeString"
+                        name="endTime"
+                        required
+                        [min]="getMinEndTime()">
+                      <div class="form-text">Минимум через 1 час от текущего времени</div>
+                    </div>
+
+                    <!-- Быстрые варианты времени -->
+                    <div class="mb-3">
+                      <label class="form-label">Продлить на:</label>
+                      <div class="d-grid gap-2">
+                        <button 
+                          type="button"
+                          class="btn btn-outline-primary btn-sm"
+                          (click)="extendEndTime(1)">
+                          +1 день
+                        </button>
+                        <button 
+                          type="button"
+                          class="btn btn-outline-primary btn-sm"
+                          (click)="extendEndTime(7)">
+                          +7 дней
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Сообщения об ошибках/успехе -->
+            <div *ngIf="errorMessage" class="alert alert-danger mt-4">
+              <i class="fas fa-exclamation-circle me-2"></i>
+              {{ errorMessage }}
+            </div>
+            <div *ngIf="successMessage" class="alert alert-success mt-4">
+              <i class="fas fa-check-circle me-2"></i>
+              {{ successMessage }}
+            </div>
+
+            <!-- Кнопки управления -->
+            <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+              <div>
+                <a [routerLink]="['/lots', lot.id]" class="btn btn-outline-secondary">
+                  <i class="fas fa-times me-2"></i>Отмена
+                </a>
+              </div>
+              <div>
+                <button 
+                  type="submit" 
+                  class="btn btn-warning text-dark"
+                  [disabled]="isUpdating || !editForm.form.valid">
+                  <span *ngIf="isUpdating" class="spinner-border spinner-border-sm me-2"></span>
+                  <i class="fas fa-save me-2" *ngIf="!isUpdating"></i>
+                  {{ isUpdating ? 'Сохранение...' : 'Сохранить изменения' }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Управление изображениями -->
+      <div class="card mt-4" *ngIf="lot">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">
+            <i class="fas fa-images me-2"></i>Управление изображениями
+          </h5>
+        </div>
+        <div class="card-body">
+          <app-lot-image-upload 
+            [lotId]="lot.id"
+            [existingImages]="lot.images || []"
+            (imageUploaded)="onImageUploaded($event)"
+            (imageDeleted)="onImageDeleted($event)">
+          </app-lot-image-upload>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

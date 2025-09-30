@@ -1,0 +1,117 @@
+<div class="lot-image-upload">
+  <!-- Загрузка изображений -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h6 class="mb-0">
+        <i class="fas fa-cloud-upload-alt me-2"></i>Загрузить изображения
+      </h6>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="imageFiles" class="form-label">Выберите файлы</label>
+          <input 
+            type="file" 
+            id="imageFiles"
+            class="form-control" 
+            accept="image/*"
+            multiple
+            (change)="onFilesSelected($event)">
+          <div class="form-text">
+            Поддерживаемые форматы: JPEG, PNG, GIF, WebP. Максимальный размер: 10MB на файл
+          </div>
+          <div *ngIf="selectedFiles.length > 0" class="mt-2">
+            <small class="text-muted">Выбрано файлов: {{ selectedFiles.length }}</small>
+            <ul class="list-unstyled mt-1">
+              <li *ngFor="let file of selectedFiles" class="small text-muted">
+                <i class="fas fa-file-image me-1"></i>{{ file.name }} ({{ formatFileSize(file.size) }})
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-check mt-4">
+            <input 
+              class="form-check-input" 
+              type="checkbox" 
+              id="isMain"
+              [(ngModel)]="isMain">
+            <label class="form-check-label" for="isMain">
+              Первое изображение - главное
+            </label>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">&nbsp;</label>
+          <button 
+            class="btn btn-primary w-100" 
+            (click)="uploadImages()"
+            [disabled]="selectedFiles.length === 0 || isUploading">
+            <span *ngIf="isUploading" class="spinner-border spinner-border-sm me-2"></span>
+            <i *ngIf="!isUploading" class="fas fa-upload me-2"></i>
+            {{ isUploading ? 'Загрузка...' : 'Загрузить' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Сообщения об ошибках и успехе -->
+      <div *ngIf="uploadError" class="alert alert-danger mt-3 mb-0">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        {{ uploadError }}
+      </div>
+      <div *ngIf="uploadSuccess" class="alert alert-success mt-3 mb-0">
+        <i class="fas fa-check-circle me-2"></i>
+        {{ uploadSuccess }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Список существующих изображений -->
+  <div class="card" *ngIf="existingImages.length > 0">
+    <div class="card-header">
+      <h6 class="mb-0">
+        <i class="fas fa-images me-2"></i>Загруженные изображения ({{ existingImages.length }})
+      </h6>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div *ngFor="let image of existingImages" class="col-md-4 col-lg-3">
+          <div class="image-item" [class.main-image]="image.isMain">
+            <img [src]="image.fileUrl" 
+                 [alt]="image.fileName"
+                 class="img-fluid rounded">
+            <div class="image-overlay">
+              <div class="image-info">
+                <small class="text-white">
+                  <i class="fas fa-file me-1"></i>{{ image.fileName }}
+                </small>
+                <br>
+                <small class="text-white">
+                  <i class="fas fa-weight me-1"></i>{{ formatFileSize(image.fileSize) }}
+                </small>
+              </div>
+              <div class="image-actions">
+                <button 
+                  class="btn btn-sm btn-danger"
+                  (click)="deleteImage(image.id)"
+                  title="Удалить изображение">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="image.isMain" class="main-image-badge">
+              <i class="fas fa-star"></i> Главное
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Пустое состояние -->
+  <div *ngIf="existingImages.length === 0" class="text-center py-4">
+    <i class="fas fa-images text-muted" style="font-size: 3rem;"></i>
+    <h6 class="text-muted mt-3">Нет загруженных изображений</h6>
+    <p class="text-muted">Загрузите первое изображение для лота</p>
+  </div>
+</div>

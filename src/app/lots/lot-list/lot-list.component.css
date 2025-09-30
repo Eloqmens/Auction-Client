@@ -1,0 +1,369 @@
+/* Карточки лотов */
+.lot-card {
+  transition: all 0.3s ease;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+.lot-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+
+/* Описание с ограничением высоты */
+.description-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 2.4em;
+  line-height: 1.2em;
+}
+
+/* Информация о ценах */
+.price-info {
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* Прогресс бар */
+.progress {
+  border-radius: 10px;
+  background-color: #e9ecef;
+}
+
+.progress-bar {
+  border-radius: 10px;
+  transition: width 0.6s ease;
+}
+
+/* Временная информация */
+.time-info {
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+/* Кнопки */
+.btn-primary {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Значки и бейджи */
+.badge {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* Иконки */
+.fas {
+  font-size: 0.9em;
+}
+
+/* Простая пагинация */
+.simple-pagination {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #dee2e6;
+}
+
+.simple-pagination .page-info {
+  background: white;
+  border-radius: 8px;
+  padding: 8px 16px;
+  border: 2px solid #007bff;
+}
+
+.simple-pagination .page-current {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.simple-pagination .page-total {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.simple-pagination .btn {
+  border-radius: 8px;
+  font-weight: 500;
+  min-width: 90px;
+}
+
+/* Анимации для предупреждений */
+.alert-warning {
+  border-radius: 6px;
+  border: none;
+  background: #fff3cd;
+}
+
+/* Дропдаун меню */
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 8px 0;
+}
+
+.dropdown-item {
+  padding: 8px 16px;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  transform: translateX(4px);
+}
+
+/* Улучшения для фильтров */
+.form-select, .form-control {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  transition: all 0.2s ease;
+}
+
+.form-select:focus, .form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Заголовок страницы */
+h2 {
+  color: #343a40;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+/* Responsive улучшения */
+@media (max-width: 768px) {
+  .lot-card {
+    margin-bottom: 1rem;
+  }
+  
+  .pagination-numbers .btn {
+    min-width: 35px;
+    height: 35px;
+    font-size: 0.875rem;
+  }
+  
+  .card-title {
+    font-size: 1rem;
+  }
+}
+
+/* Пустое состояние */
+.empty-state {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 3rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Модальное окно категорий */
+.modal-content {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  border-radius: 12px 12px 0 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  border-top: 1px solid #dee2e6;
+  border-radius: 0 0 12px 12px;
+}
+
+/* Карточки в модальном окне */
+.modal-body .card {
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.modal-body .card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Список категорий в модальном окне */
+.list-group-item {
+  border-left: none;
+  border-right: none;
+  padding: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+.list-group-item:first-child {
+  border-top: none;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+/* Кнопка управления категориями рядом с лейблом */
+.btn-outline-primary.btn-sm {
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  line-height: 1;
+  border-radius: 4px;
+}
+
+/* Алерты в модальном окне */
+.modal-body .alert {
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+/* Спиннеры в кнопках */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Бейджи в списке категорий */
+.badge.bg-secondary {
+  background-color: #6c757d !important;
+  color: white;
+  font-weight: 500;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* Кнопка закрытия модального окна */
+.btn-close-white {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Анимация для модального окна */
+.modal.fade .modal-dialog {
+  transform: translate(0, -50px);
+  transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+  transform: translate(0, 0);
+}
+
+/* Улучшения для формы в модальном окне */
+.modal-body input.form-control {
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  transition: all 0.2s ease;
+}
+
+.modal-body input.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Пустое состояние в списке категорий */
+.opacity-50 {
+  opacity: 0.5 !important;
+}
+
+/* === СТИЛИ ДЛЯ ИЗОБРАЖЕНИЙ ЛОТОВ === */
+
+.lot-image-container {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.lot-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.lot-image:hover {
+  transform: scale(1.05);
+}
+
+.lot-image-placeholder {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  color: #6c757d;
+}
+
+.lot-image-placeholder i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.lot-image-placeholder span {
+  font-size: 0.875rem;
+}
+
+/* Индикатор количества изображений */
+.image-count-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .lot-image-container {
+    height: 150px;
+  }
+  
+  .lot-image-placeholder {
+    height: 150px;
+  }
+  
+  .lot-image-placeholder i {
+    font-size: 1.5rem;
+  }
+}

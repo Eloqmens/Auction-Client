@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+Allow: /lots
+Allow: /auth/login
+Allow: /auth/register
+
+Disallow: /admin/
+
+Disallow: /api/
+
+Sitemap: /sitemap.xml
+
+Crawl-delay: 1

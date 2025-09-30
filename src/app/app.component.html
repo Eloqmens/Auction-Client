@@ -1,0 +1,62 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="['/']">
+      <i class="fas fa-gavel me-2"></i>Auction App
+    </a>
+    
+    <!-- Кнопка-гамбургер для мобильного меню -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Переключить навигацию">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav me-auto">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/lots']" (click)="closeNavbar()">
+          <i class="fas fa-list me-1"></i>Лоты
+        </a>
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      <li *ngIf="!authService.isAuthenticated()" class="nav-item">
+        <a class="nav-link" [routerLink]="['/login']" (click)="closeNavbar()">
+          <i class="fas fa-sign-in-alt me-1"></i>Войти
+        </a>
+      </li>
+      <li *ngIf="!authService.isAuthenticated()" class="nav-item">
+        <a class="nav-link" [routerLink]="['/register']" (click)="closeNavbar()">
+          <i class="fas fa-user-plus me-1"></i>Регистрация
+        </a>
+      </li>
+      <li *ngIf="authService.isAuthenticated()" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+          <i class="fas fa-user me-1"></i>
+          {{ authService.isAdmin() ? 'Администратор' : 'Пользователь' }}
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" [routerLink]="['/lots']" (click)="closeNavbar()">
+            <i class="fas fa-list me-2"></i>Мои лоты
+          </a></li>
+          <li *ngIf="authService.isAdmin()"><hr class="dropdown-divider"></li>
+          <li *ngIf="authService.isAdmin()"><h6 class="dropdown-header">Администрирование</h6></li>
+          <li *ngIf="authService.isAdmin()"><a class="dropdown-item disabled">
+            <i class="fas fa-cogs me-2"></i>Управление интегрировано в основной интерфейс
+          </a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger" href="#" (click)="logout()">
+            <i class="fas fa-sign-out-alt me-2"></i>Выйти
+          </a></li>
+        </ul>
+      </li>
+    </ul>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<!-- PWA Install Prompt Component -->
+<app-pwa-install-prompt></app-pwa-install-prompt>

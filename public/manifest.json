@@ -1,0 +1,50 @@
+{
+  "name": "Auction Client - Аукционное приложение",
+  "short_name": "Auction",
+  "description": "Найдите интересные лоты и делайте ставки в нашем аукционном приложении",
+  "theme_color": "#2c3e50",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "start_url": "/",
+  "dir": "auto",
+  "lang": "ru-RU",
+  "categories": ["shopping", "business"],
+  "icons": [
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "icons/icon512_maskable.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "icons/icon512_rounded.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "192x192",
+      "src": "icons/icon512_rounded.png",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Главная страница аукциона на десктопе"
+    },
+    {
+      "src": "screenshots/mobile.png", 
+      "sizes": "360x640",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Мобильная версия приложения"
+    }
+  ]
+}
